@@ -1,0 +1,4 @@
+# These are configure args
+bonding_thresh = 1.25  #共价半径和的1.25倍以内均视为成键
+colvR_file = ./data/colvR.txt #共价半径文件位置
+mol_path = ./molecules #.gjf文件和energy.txt所在目录
