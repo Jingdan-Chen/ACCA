@@ -1,4 +1,4 @@
-# Vander Waals radius
+# Vander Waals radius (rdkit generated)
 H,1.2
 He,1.4
 Li,2.2

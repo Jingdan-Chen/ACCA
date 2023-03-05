@@ -6,7 +6,7 @@ Covalence_Dict = {'H': 0.31, 'Li': 1.28, 'Be': 0.96, 'B': 0.84, 'C': 0.73, 'N': 
                   'Mg': 1.41, 'Al': 1.21, 'Si': 1.11, 'P': 1.07, 'S': 1.05, 'Cl': 1.02, 'Mn': 1.39, 'Co': 1.26,
                   'Ni': 1.24, 'Cu': 1.32, 'Br': 1.20}
 
-def is_bond_exist(atom1, atom2, length,thresh=1.1):
+def is_bond_exist(atom1, atom2, length,thresh=1.25):
 
     """ 给定长度和两端原子种类，判断该距离下两原子是否成键 """
 

@@ -1,4 +1,4 @@
-# Covalent radius
+# Covalent radius(rdkit generated)
 H,0.23
 He,0.93
 Li,0.68
