@@ -5,7 +5,7 @@
    3. Molecule Graph building （√）
       1. **scipy 生成稀疏矩阵+networkx生成分子图**
       2. 检查是否还有未成键的原子（配位数=0），取"最近的原子成一根键"
-   4. Read in internal coordinates
+   4. Read in internal coordinates(√)
       1. 检查每根键两边的原子，如果有一个原子配位数=1，则此键旋转不存在，统计需要旋转的键（M个，约为2N吧）
       2. 对于M根键，原则上都可以找到一个二面角确定其旋转方向
       3. 录入冗余内坐标，确定其是否与已有二面角同构，若无则加入

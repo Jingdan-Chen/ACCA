@@ -306,6 +306,21 @@ def is_IC_same(obj1,obj2):
         res = True if obj1[1:3]==obj2[1:3] or obj1[1:3]==obj2[2:0:-1] else False
     return res
 
+def get_geom_id(geomx,IClis):
+    res = [geomx.energy]
+    for item in IClis:
+        res.append(geomx.IClis[item])
+    return res
+
+def redun_add(aim_set,string):
+    obj = eval(string)
+    for item in obj:
+        for exist in aim_set: # 这里exist和item都是从1数起的内坐标，类型为tuple
+            if is_IC_same(item,exist):
+                break
+        else:
+            aim_set.add(item)
+    return aim_set
 
 class geom():
     def __init__(self,file,name=None) -> None:
@@ -313,9 +328,8 @@ class geom():
         self.name = name if name!=None else file.split(".")[0]
         self.xyz2graph()
         self.rotable_dict = self.find_rotable()
-        self.IClis = {list(self.rotable_dict.values())[i][0]:list(self.rotable_dict.values())[i][1] 
-                      for i in range(len(self.rotable_dict))}
-        self.redun_add(args["redundantIC"])
+        # self.redun_add(args["redundantIC"])
+
         return
     
     def xyz2graph(self):
@@ -368,38 +382,35 @@ class geom():
         edge_lis = list(self.G.edges)
         for item in edge_lis:
             [atom1,atom2] = item
-            nei1 = self.get_neighbor(atom1,exclude=atom2)
-            nei2 = self.get_neighbor(atom2,exclude=atom1)
-            if len(nei1)==0 or len(nei2)==0:
+            num_nei1 = len(self.get_neighbor(atom1,exclude=atom2))
+            num_nei2 = len(self.get_neighbor(atom2,exclude=atom1))
+            if num_nei1==0 or num_nei2==0:
                 continue
+            elif num_nei1<num_nei2:
+                nei1 = self.get_neighbor(atom1,exclude=atom2)
+                nei2 = self.get_neighbor(atom2,exclude={atom1,nei1[0]})
             else:
-                dihe_rep = (nei1[0]+1,atom1+1,atom2+1,nei2[0]+1)
-                rotable_dict[(atom1,atom2)] = [dihe_rep,
-                                               compute_internal(self.xyzM,[dihe_rep])[0]]
-                # (atom1,atom2) starts from 0 (consistent with self.G); 
-                # (nei1[0]+1,atom1+1,atom2+1,nei2[0]+1) starts from 1 (consistent with chem)
+                nei2 = self.get_neighbor(atom2,exclude=atom1)
+                nei1 = self.get_neighbor(atom1,exclude={atom2,nei2[0]})
+            dihe_rep = (nei1[0]+1,atom1+1,atom2+1,nei2[0]+1)
+            rotable_dict[(atom1,atom2)] = [dihe_rep,
+                                            compute_internal(self.xyzM,[dihe_rep])[0]]
+            # (atom1,atom2) starts from 0 (consistent with self.G); 
+            # (nei1[0]+1,atom1+1,atom2+1,nei2[0]+1) starts from 1 (consistent with chem)
         return rotable_dict
 
-    def redun_add(self,string):
-        obj = eval(string)
-        for item in obj:
-            for exist in self.IClis.keys(): # 这里exist和item都是从1数起的内坐标，类型为tuple
-                if is_IC_same(item,exist):
-                    break
-            else:
-                self.IClis[item] = compute_internal(self.xyzM,item)[0]
+    # def redun_add(self,string):
+    #     obj = eval(string)
+    #     for item in obj:
+    #         for exist in self.IClis.keys(): # 这里exist和item都是从1数起的内坐标，类型为tuple
+    #             if is_IC_same(item,exist):
+    #                 break
+    #         else:
+    #             self.IClis[item] = compute_internal(self.xyzM,item)[0]
+    #     return
+    
+    def generate_IClis(self,IClis):
+        self.IClis = dict()
+        for item in IClis:
+            self.IClis[item] = compute_internal(self.xyzM,[item])[0]
         return
-
-
-# read in all geom and energies
-    # 获取指定目录下的所有文件
-molfiles = os.listdir(args['mol_path'])
-all_geom=dict()
-for file in molfiles:
-    [basename,suffix] = file.split(".")
-    if suffix == args['mol_suffix']:
-        all_geom[basename] = geom(file=file) # 录入所有分子的结构和能量
-
-# obj = all_geom["Co-0_opt_spe000001"]
-
-# def all_geom2csv(all_geom): #Developing!!
