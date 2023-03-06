@@ -1,6 +1,14 @@
 # These are configure args
-bonding_thresh = 1.25  #共价半径和的1.25倍以内均视为成键
+bonding_thresh = 1.1  #共价半径和的1.25倍以内均视为成键
 colvR_file = ./data/colvR.txt #共价半径文件位置
 mol_path = ./molecules #.gjf文件和energy.txt所在目录
 mol_suffix = out # g16的单点文件后缀
-redundantIC = {(35,32,1,23)}
+redundantIC = {(53,52,1,16)}
+res_file = ./result #结果的.csv和.gjf文件所在
+spe_window = 4 # 单点能筛选窗口
+dihe_var_thre = 10 # 二面角绝对值方差筛选窗口
+use_lasso = True # 是否使用LASSO方法进一步减少特征数
+lasso_alpha = 0.001 # lasso 正则化系数，越大正则化越强
+lasso_max_iter = 10000 # lasso参数
+dbscan_eps = 0.2 #密度聚类参数
+begin_clear = True #开始任务之前是否清空result文件夹

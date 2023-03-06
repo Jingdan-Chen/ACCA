@@ -399,15 +399,6 @@ class geom():
             # (nei1[0]+1,atom1+1,atom2+1,nei2[0]+1) starts from 1 (consistent with chem)
         return rotable_dict
 
-    # def redun_add(self,string):
-    #     obj = eval(string)
-    #     for item in obj:
-    #         for exist in self.IClis.keys(): # 这里exist和item都是从1数起的内坐标，类型为tuple
-    #             if is_IC_same(item,exist):
-    #                 break
-    #         else:
-    #             self.IClis[item] = compute_internal(self.xyzM,item)[0]
-    #     return
     
     def generate_IClis(self,IClis):
         self.IClis = dict()
