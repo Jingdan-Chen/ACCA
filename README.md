@@ -1,6 +1,7 @@
 # Automatic *Crest* Conformation Analysis
 
 ## Purpose
+
 Grimme's crest software is a handful tool for conformation generation, but sometime it generates too many structures and many of their structure very similar. Here I propose a method to process generated "crest_conformer.xyz" to re-sampling valuable conformations in chemical space based on dihedral angle
 
 ## Workflow
